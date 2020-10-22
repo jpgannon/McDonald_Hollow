@@ -5,5 +5,8 @@ output: html_notebook
 Read in data and plot one or more temp sensors, filter by dates
 ```{r}
 
+#load necessary packages
+
+
 ```
 
