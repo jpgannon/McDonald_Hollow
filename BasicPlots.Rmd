@@ -13,8 +13,8 @@ library(lubridate)
 
 ```{r}
 
-locations <- read_csv("Sensor_Locations.csv")
-setwd("G:\My Drive\Independent Study Fall 2020\McDonald_Hollow")
+locations <- read_csv("Sensor Locations.csv")
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/Corrected Temperature Files")
 data <-
     list.files(pattern = "*.csv") %>% 
     map_dfr(~read_csv(.) %>% 
@@ -23,12 +23,10 @@ data <-
     mutate_at("Sensor", str_replace_all, pattern = ' ', replacement = '')
 data <- left_join(data, locations, by = c("Sensor" = "SensorID"))
 
-
-temperatures <- read.csv("Corrected Temperature Files")
-setwd("G:\My Drive\Independent Study Fall 2020\McDonald_Hollow\Corrected Temperature Files")
+```
 
 
-A$DateTime <- mdy_hm(A$DateTime)
+```{r}
 
 ```
 
