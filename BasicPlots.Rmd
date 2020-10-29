@@ -13,21 +13,27 @@ library(lubridate)
 
 ```{r}
 
-locations <- read_csv("Sensor_Locations.csv")
-setwd("G:\My Drive\Independent Study Fall 2020\McDonald_Hollow")
-data <-
+locations <- read_csv("Sensor Locations.csv")
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/Corrected Temperature Files")
+tempdata <-
     list.files(pattern = "*.csv") %>% 
     map_dfr(~read_csv(.) %>% 
               mutate(Sensor = .x)) %>%
     mutate_at("Sensor", str_trunc, width = 10, side='right', ellipsis = '') %>%
     mutate_at("Sensor", str_replace_all, pattern = ' ', replacement = '')
-data <- left_join(data, locations, by = c("Sensor" = "SensorID"))
+tempdata <- left_join(data, locations, by = c("Sensor" = "SensorID"))
+
+```
 
 
-temperatures <- read.csv("Corrected Temperature Files")
-setwd("G:\My Drive\Independent Study Fall 2020\McDonald_Hollow\Corrected Temperature Files")
+```{r}
 
+toplot <- filter(tempdata, Sensor == "SN20680147")
 
-A$DateTime <- mdy_hm(A$DateTime)
+ggplot(toplot, aes(DateTime, TempCor_F))+
+  geom_line()+
+  labs(title = "Sensor SN20680147- Air", x = "Time", y = "Temperature")+
+  theme_bw()
+
 
 ```
