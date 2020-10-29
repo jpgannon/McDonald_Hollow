@@ -2,6 +2,7 @@
 title: "R Notebook"
 output: html_notebook
 ---
+
 Read in data and plot one or more temp sensors, filter by dates
 
 ```{r}
@@ -9,7 +10,6 @@ library(ggplot2)
 library(tidyverse)
 library(lubridate)
 ```
-
 
 ```{r}
 
@@ -31,4 +31,3 @@ setwd("G:\My Drive\Independent Study Fall 2020\McDonald_Hollow\Corrected Tempera
 A$DateTime <- mdy_hm(A$DateTime)
 
 ```
-
