@@ -31,7 +31,10 @@ tempdata <- left_join(data, locations, by = c("Sensor" = "SensorID"))
 toplot <- filter(tempdata, Sensor == "SN20680147")
 
 ggplot(toplot, aes(DateTime, TempCor_F))+
-  geom_line()
+  geom_line()+
+  labs(title = "Sensor SN20680147- Air", x = "Time", y = "Temperature")+
+  theme_bw()
+
 
 ```
 
