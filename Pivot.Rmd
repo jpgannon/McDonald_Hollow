@@ -3,15 +3,11 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-Read in data and plot one or more temp sensors, filter by dates
-
 ```{r}
 library(ggplot2)
 library(tidyverse)
 library(lubridate)
 ```
-
-## Reading in data
 
 ```{r}
 
@@ -27,15 +23,15 @@ tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
 
 ```
 
-### Plot individual timeseries
-
+PIVOT DATA WIDE and add column subtracting temperatures of sensors (in water sensor - in/out of water sensor)
 ```{r}
 
-toplot <- filter(tempdata, Sensor == "SN20680147")
+wide <- pivot_wider(tempdata, names_from = Sensor, values_from = TempCor_F, DateTime)
+mutate(wide, c = (SN20680149 - SN20883402))
 
-ggplot(toplot, aes(DateTime, TempCor_F))+
-  geom_line()+
-  labs(title = "Sensor SN20680147- Air", x = "Time", y = "Temperature")+
-  theme_bw()
+long <- pivot_longer(wide, names_to = c(SN20680147, SN20883419), values_to = DateTime)
+
 
 ```
+
+
