@@ -21,7 +21,7 @@ tempdata <-
               mutate(Sensor = .x)) %>%
     mutate_at("Sensor", str_trunc, width = 10, side='right', ellipsis = '') %>%
     mutate_at("Sensor", str_replace_all, pattern = ' ', replacement = '')
-tempdata <- left_join(data, locations, by = c("Sensor" = "SensorID"))
+tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
 
 ```
 
@@ -35,6 +35,18 @@ ggplot(toplot, aes(DateTime, TempCor_F))+
   labs(title = "Sensor SN20680147- Air", x = "Time", y = "Temperature")+
   theme_bw()
 
+```
+
+PIVOT DATA WIDE 
+```{r}
+
+pivot_wider(tempdata, names_from = Sensor, values_from = TempCor_F, DateTime)
+
+```
+
+
+PIVOT DATA LONG AND CREATE COLUMN THAT DETERMINES FLOW PRESENCE
+```{r}
 
 ```
 
