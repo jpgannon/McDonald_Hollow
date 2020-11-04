@@ -11,6 +11,8 @@ library(tidyverse)
 library(lubridate)
 ```
 
+## Reading in data
+
 ```{r}
 
 locations <- read_csv("Sensor Locations.csv")
@@ -25,6 +27,7 @@ tempdata <- left_join(data, locations, by = c("Sensor" = "SensorID"))
 
 ```
 
+### Plot individual timeseries
 
 ```{r}
 
