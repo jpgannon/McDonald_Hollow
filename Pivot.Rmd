@@ -4,16 +4,15 @@ output: html_notebook
 ---
 
 ```{r}
-library(ggplot2)
 library(tidyverse)
 library(lubridate)
 ```
 
 ```{r}
-setwd("/Volumes/GoogleDrive/My Drive/Brush Mtn Station/Temp sensors/Oct2_2020_download")
+#setwd("/Volumes/GoogleDrive/My Drive/Brush Mtn Station/Temp sensors/Oct2_2020_download")
 locations <- read_csv("Sensor Locations.csv")
-#setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/Corrected Temperature Files")
-setwd("/Volumes/GoogleDrive/My Drive/Brush Mtn Station/Temp sensors/Oct2_2020_download/Corrected Temperature Files")
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/Corrected Temperature Files")
+#setwd("/Volumes/GoogleDrive/My Drive/Brush Mtn Station/Temp sensors/Oct2_2020_download/Corrected Temperature Files")
 tempdata <-
     list.files(pattern = "*.csv") %>% 
     map_dfr(~read_csv(.) %>% 
@@ -21,27 +20,30 @@ tempdata <-
     mutate_at("Sensor", str_trunc, width = 10, side='right', ellipsis = '') %>%
     mutate_at("Sensor", str_replace_all, pattern = ' ', replacement = '')
 tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
-
 ```
 
-PIVOT DATA WIDE and add column subtracting temperatures of sensors (in water sensor - in/out of water sensor)
+
 ```{r}
-
-
-
+#pivot data wide
 wide <- pivot_wider(tempdata, names_from = Sensor, values_from = TempCor_F, DateTime) 
-#mutate(wide, c = (SN20680149 - SN20883402))
 
 #function that subtracts the sensor you want from whatever is passed to it
-subair <- function(x, na.rm = FALSE) (x - wide$SN20883402)
+subair <- function(x, na.rm = FALSE) (x - wide$SN20680149)
 
 #New tibble with sensor in subair function subtracted from all sensors
 sub3402 <- wide %>% mutate_at(vars(matches("SN")), subair)
 
 #new tibble in long format, joined with location data
-sub3402l <- sub3402 %>% pivot_longer(!DateTime, names_to = "SensorID", values_to = "TempFsub") %>%
-   left_join(locations, by = c("SensorID" = "SensorID"))
+sub3402l <- sub3402 %>% pivot_longer(!DateTime, names_to = "SensorID", values_to = "TempFsub")  %>%
+  left_join(locations, by = c("SensorID" = "SensorID"))
+```
 
+
+```{r}
+
+ggplot(sub3402l, aes(DateTime, TempFsub))+
+  geom_line()+
+  labs(title = "Water", x = "Time", y = "Temperature")
 
 ```
 
