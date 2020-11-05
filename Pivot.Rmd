@@ -40,11 +40,19 @@ sub3402l <- sub3402 %>% pivot_longer(!DateTime, names_to = "SensorID", values_to
 
 
 ```{r}
-
-ggplot(sub3402l, aes(DateTime, TempFsub))+
+#plot an individual sensor
+sub3402l %>% filter(SensorID == "SN20680147")%>%
+ggplot(aes(DateTime, TempFsub))+
   geom_line()+
-  labs(title = "Water", x = "Time", y = "Temperature")
+  labs(title = "SN20680147 - Air", x = "Time", y = "Temperature")
 
 ```
+```{r}
+#plot a bunch of sensors and color by location
+sub3402l %>% filter(Type == "Stream", Stream == "MS")%>%
+ggplot(aes(DateTime, TempFsub, color = SensorID))+
+  geom_line()+
+  labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 
+```
 
