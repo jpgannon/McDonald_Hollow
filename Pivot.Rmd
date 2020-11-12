@@ -25,34 +25,54 @@ tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
 
 ```{r}
 #pivot data wide
-wide <- pivot_wider(tempdata, names_from = Sensor, values_from = TempCor_F, DateTime) 
+wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, DateTime) 
 
+#SUBAIR
 #function that subtracts the sensor you want from whatever is passed to it
-subair <- function(x, na.rm = FALSE) (x - wide$SN20680149)
+subair <- function(x, na.rm = FALSE) (x - wide$MS8_Air)
 
 #New tibble with sensor in subair function subtracted from all sensors
-sub3402 <- wide %>% mutate_at(vars(matches("SN")), subair)
+subMS8_Air <- wide %>% mutate_at(vars(matches("MS")), subair)
 
 #new tibble in long format, joined with location data
-sub3402l <- sub3402 %>% pivot_longer(!DateTime, names_to = "SensorID", values_to = "TempFsub")  %>%
-  left_join(locations, by = c("SensorID" = "SensorID"))
+subMS8_AirL <- subMS8_Air %>% pivot_longer(!DateTime, names_to = "Name", values_to = "TempFsub")  %>%
+  left_join(locations, by = c("Name" = "Name"))
+
+
+#SUBWATER
+#function that subtracts the sensor you want from whatever is passed to it
+subwater <- function(x, na.rm = FALSE) (x - wide$MS8)
+
+#New tibble with sensor in subair function subtracted from all sensors
+subMS8 <- wide %>% mutate_at(vars(matches("MS")), subwater)
+
+#new tibble in long format, joined with location data
+subMS8L <- subMS8 %>% pivot_longer(!DateTime, names_to = "Name", values_to = "TempFsub")  %>%
+  left_join(locations, by = c("Name" = "Name"))
 ```
 
 
 ```{r}
 #plot an individual sensor
-sub3402l %>% filter(SensorID == "SN20680147")%>%
+subMS8_AirL %>% filter(Name == "MS8_Air")%>%
 ggplot(aes(DateTime, TempFsub))+
   geom_line()+
-  labs(title = "SN20680147 - Air", x = "Time", y = "Temperature")
+  labs(title = "MS8_Air - Air", x = "Time", y = "Temperature")
 
 ```
 ```{r}
+#SUB AIR
 #plot a bunch of sensors and color by location
-sub3402l %>% filter(Type == "Stream", Stream == "MS")%>%
-ggplot(aes(DateTime, TempFsub, color = SensorID))+
+subMS8_AirL %>% filter(Type == "Stream", Stream == "MS")%>%
+ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
-
+```
+```{r}
+#SUB WATER
+subMS8L %>% filter(Type == "Stream", Stream == "MS")%>%
+ggplot(aes(DateTime, TempFsub, color = Name))+
+  geom_line()+
+  labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 ```
 
