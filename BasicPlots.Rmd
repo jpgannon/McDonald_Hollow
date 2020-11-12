@@ -31,7 +31,7 @@ tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
 
 ```{r}
 
-toplot <- filter(tempdata, Sensor == "SN20680147")
+toplot <- filter(tempdata, Name == "MS8")
 
 ggplot(toplot, aes(DateTime, TempCor_F))+
   geom_line()+
