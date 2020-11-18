@@ -54,12 +54,13 @@ subMS8L <- subMS8 %>% pivot_longer(!DateTime, names_to = "Name", values_to = "Te
 
 ```{r}
 #plot an individual sensor
-subMS8_AirL %>% filter(Name == "MS8_Air")%>%
-ggplot(aes(DateTime, TempFsub))+
+toplot <- filter(tempdata, Name == "MS8")
+ggplot(toplot, aes(DateTime, TempCor_F))+
   geom_line()+
-  labs(title = "MS8_Air - Air", x = "Time", y = "Temperature")
-
+  labs(title = "MS8", x = "Time", y = "Temperature")+
+  theme_bw()
 ```
+
 ```{r}
 #SUB AIR
 #plot a bunch of sensors and color by location
@@ -68,11 +69,30 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 ```
+
 ```{r}
 #SUB WATER
 subMS8L %>% filter(Type == "Stream", Stream == "MS")%>%
 ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
+```
+
+```{r}
+#plot smaller groups-> MS13 group
+subMS8_AirL %>% filter(Type == "Stream", Stream == "MS")%>%
+  select(starts_with("MS13"))
+ggplot(subMS8_AirL, aes(DateTime, TempFsub, color = Name))+
+  geom_line()+
+  labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
+
+
+
+
+#ggplot(aes(DateTime, TempFsub, color = Name))+
+ # geom_line()+
+  #labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
+
+
 ```
 
