@@ -86,13 +86,5 @@ ggplot(subMS8_AirL, aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 
-
-
-
-#ggplot(aes(DateTime, TempFsub, color = Name))+
- # geom_line()+
-  #labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
-
-
 ```
 
