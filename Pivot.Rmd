@@ -82,11 +82,63 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
 
 ```{r}
 #plot smaller groups
-tempdata%>% filter(Name == c("MS13", "MS13_Air", "MS13_2"))%>%
+tempdata%>% filter(Name == c("MS1", "MS2", "TRIB1"))%>%
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
-  labs(title = "MS8", x = "Time", y = "Temperature")+
+  labs(title = "MS1, MS2, TRIB1 Sensors", x = "Time", y = "Temperature")+
   theme_bw()
 ```
 
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS4", "MS5"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS 4 and 5 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
 
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS 6-12 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
+
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS 6-12 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
+
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS13", "MS13_Air", "MS13_2"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS13 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
+
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS14", "MS15"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS 14 and 15 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
+
+```{r}
+#plot smaller groups
+tempdata%>% filter(Name == c("MS18", "MS19", "MS19_Air"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
+  geom_line()+
+  labs(title = "MS 18 and 19 Sensors", x = "Time", y = "Temperature")+
+  theme_bw()
+```
