@@ -80,8 +80,7 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
 
 ```{r}
 #plot smaller groups-> MS13 group
-subMS8_AirL %>% filter(Type == "Stream", Stream == "MS")%>%
-  select(starts_with("MS13"))
+subMS8_AirL %>% filter(Stream == "MS", startsWith("MS13"))%>%
 ggplot(subMS8_AirL, aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
