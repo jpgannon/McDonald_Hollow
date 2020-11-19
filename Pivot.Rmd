@@ -79,24 +79,14 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 ```
 
+
 ```{r}
-#plot smaller groups-> MS13 group
-
-#function that subtracts the sensor you want from whatever is passed to it
-subwat <- function(x, na.rm = FALSE) (x - wide$MS13_2)
-
-#New tibble with sensor in subair function subtracted from all sensors
-subMS13_2 <- wide %>% mutate_at(vars(matches("MS")), subwat)
-
-#new tibble in long format, joined with location data
-subMS13_2L <- subMS13_2 %>% pivot_longer(!DateTime, names_to = "Name", values_to = "TempFsub")  %>%
-  left_join(locations, by = c("Name" = "Name"))
-
-
-subMS13_2L %>% select(starts_with("MS13"))%>%
-ggplot(aes(subMS13_2L$DateTime, subMS13_2L$TempFsub, color = subMS13_2L$Name))+
+#plot smaller groups
+tempdata%>% filter(Name == c("MS13", "MS13_Air", "MS13_2"))%>%
+ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
-  labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
-
+  labs(title = "MS8", x = "Time", y = "Temperature")+
+  theme_bw()
 ```
+
 
