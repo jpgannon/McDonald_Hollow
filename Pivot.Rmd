@@ -6,6 +6,7 @@ output: html_notebook
 ```{r}
 library(tidyverse)
 library(lubridate)
+library(dplyr)
 ```
 
 ```{r}
@@ -80,8 +81,8 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
 
 ```{r}
 #plot smaller groups-> MS13 group
-subMS8_AirL %>% filter(Stream == "MS", startsWith("MS13"))%>%
-ggplot(subMS8_AirL, aes(DateTime, TempFsub, color = Name))+
+subMS8_AirL %>% filter(Stream == "MS", Name == "MS13" & Name == "MS13_Air" & Name == "MS13_2")%>%
+ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
 
