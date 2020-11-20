@@ -72,7 +72,8 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
 
 ```{r}
 #SUB WATER
-subMS8L %>% filter(Type == "Stream", Stream == "MS", between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
+sites <- c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12")
+subMS8L %>% filter(Name %in% sites, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
 ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
@@ -105,7 +106,7 @@ ggplot(aes(DateTime, TempCor_F, color = Name))+
 
 ```{r}
 #plot smaller groups
-tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"))%>%
+tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"), between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
   labs(title = "MS 6-12 Sensors", x = "Time", y = "Temperature")+

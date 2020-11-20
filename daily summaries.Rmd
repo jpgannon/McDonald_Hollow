@@ -1,0 +1,27 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#daily summaries for sensor temperature - water temperature
+dailysummaries <- subMS8L %>% 
+  group_by(Name, 
+           year = year(DateTime), 
+           month = month(DateTime), 
+           day =  day(DateTime)) %>%
+  summarise(meandt = mean(TempFsub), sddt = sd(TempFsub),
+            maxdt = max(TempFsub), mindt = min(TempFsub))%>%
+  mutate(date = mdy(paste(month, day, year)))%>%
+  ungroup()%>%
+  select(!c(month, year, day))
+```
+
+```{r}
+sites <- c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12")
+
+dailysummaries %>% filter(Name %in% sites) %>%
+  ggplot(aes(date, sddt, color = Name))+
+  geom_line()
+```
+
