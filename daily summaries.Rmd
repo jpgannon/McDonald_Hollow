@@ -3,6 +3,8 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+## Create daily summaries
+
 ```{r}
 #daily summaries for sensor temperature - water temperature
 dailysummaries <- subMS8L %>% 
@@ -11,11 +13,33 @@ dailysummaries <- subMS8L %>%
            month = month(DateTime), 
            day =  day(DateTime)) %>%
   summarise(meandt = mean(TempFsub), sddt = sd(TempFsub),
-            maxdt = max(TempFsub), mindt = min(TempFsub))%>%
-  mutate(date = mdy(paste(month, day, year)))%>%
-  ungroup()%>%
-  select(!c(month, year, day))
+            maxdt = max(TempFsub), mindt = min(TempFsub)) %>%
+  mutate(date = mdy(paste(month, day, year))) %>%
+  ungroup() %>%
+  select(!c(month, year, day)) 
+
+#add reference AIR and WATER values to whole dataset
+AIR <- filter(dailysummaries, Name == "MS8_Air") %>%
+  rename(meandt_AIR = meandt,
+         sddt_AIR = sddt,
+         maxdt_AIR = maxdt,
+         mindt_AIR = mindt) %>%
+  select(!Name)
+  
+WATER <- filter(dailysummaries, Name == "MS8")%>%
+  rename(meandt_WATER = meandt,
+         sddt_WATER = sddt,
+         maxdt_WATER = maxdt,
+         mindt_WATER = mindt) %>%
+  select(!Name)
+
+dailysummaries <- dailysummaries %>%
+  left_join(AIR, by = "date") %>%
+  left_join(WATER, by = "date")
+  
 ```
+
+## test plots
 
 ```{r}
 sites <- c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12")
@@ -25,3 +49,25 @@ dailysummaries %>% filter(Name %in% sites) %>%
   geom_line()
 ```
 
+## Determine a way to apply a filter to data and say which is in water or not
+
+```{r}
+#if standard deviation of difference from water temp (sddt) is 
+#less than 15% of the sddt of a known air sensor (MS8_air), it is in water
+submerged1 <- dailysummaries %>%
+  mutate(inWater = case_when(
+                    sddt < (0.15 * sddt_AIR) ~ 1,
+                    sddt >= (0.15 * sddt_AIR) ~ 0
+                   ))
+
+
+```
+
+## Test plots
+
+```{r}
+
+submerged1 %>% 
+  ggplot(aes(x = date, y = Name, fill = as.factor(inWater)))+
+  geom_tile()
+```
