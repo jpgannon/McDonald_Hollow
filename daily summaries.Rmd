@@ -42,7 +42,7 @@ dailysummaries <- dailysummaries %>%
 ## test plots
 
 ```{r}
-sites <- c("MS1", "MS2", "TRIB1")
+sites <- c("MS2", "MS6", "MS7")
 
 dailysummaries %>% filter(Name %in% sites) %>%
   ggplot(aes(date, sddt, color = Name))+
@@ -56,8 +56,8 @@ dailysummaries %>% filter(Name %in% sites) %>%
 #less than 15% of the sddt of a known air sensor (MS8_air), it is in water
 submerged1 <- dailysummaries %>%
   mutate(inWater = case_when(
-                    sddt < (0.20 * sddt_AIR) ~ 1,
-                    sddt >= (0.20 * sddt_AIR) ~ 0
+                    sddt < (0.25 * sddt_AIR) ~ 1,
+                    sddt >= (0.25 * sddt_AIR) ~ 0
                    ))
 
 
@@ -67,9 +67,12 @@ submerged1 <- dailysummaries %>%
 
 ```{r}
 
-submerged1 %>% 
+submerged1 %>% filter(Name %in% sites)%>%
   ggplot(aes(x = date, y = Name, fill = as.factor(inWater)))+
-  geom_tile(linetype = "dashed")
+  geom_tile(color = "black")+
+  theme_linedraw()
+  
 
 #1 (blue) = water & 0 (red) = air
+  
 ```
