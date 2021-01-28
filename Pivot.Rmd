@@ -20,7 +20,8 @@ tempdata <-
               mutate(Sensor = .x)) %>%
     mutate_at("Sensor", str_trunc, width = 10, side='right', ellipsis = '') %>%
     mutate_at("Sensor", str_replace_all, pattern = ' ', replacement = '')
-tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))
+tempdata <- left_join(tempdata, locations, by = c("Sensor" = "SensorID"))%>%
+  drop_na()
 ```
 ```{r}
 #plot an individual sensor
@@ -33,7 +34,8 @@ ggplot(toplot, aes(DateTime, TempCor_F))+
 
 ```{r}
 #pivot data wide
-wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, DateTime) 
+wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, DateTime)
+
 
 #SUBAIR (every MS sensor - sensor in the air)
 #function that subtracts the sensor you want from whatever is passed to it
