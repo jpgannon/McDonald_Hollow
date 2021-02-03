@@ -35,7 +35,7 @@ ggplot(toplot, aes(DateTime, TempCor_F))+
 
 ```{r}
 #pivot data wide
-wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, values_fn = length)
+wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, DateTime)
 
 #SUBAIR (every MS sensor - sensor in the air)
 #function that subtracts the sensor you want from whatever is passed to it

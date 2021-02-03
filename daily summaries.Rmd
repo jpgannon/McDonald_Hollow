@@ -67,11 +67,12 @@ submerged1 <- dailysummaries %>%
 
 ```{r}
 
-submerged1 %>% filter(Name %in% sites)%>%
+submerged1 %>%
   ggplot(aes(x = date, y = Name, fill = as.factor(inWater)))+
   geom_tile(color = "black")+
   theme_linedraw()
-  
+ 
+
 
 #1 (blue) = water & 0 (red) = air
   
