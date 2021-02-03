@@ -35,8 +35,7 @@ ggplot(toplot, aes(DateTime, TempCor_F))+
 
 ```{r}
 #pivot data wide
-wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, DateTime, values_fn = length)
-
+wide <- pivot_wider(tempdata, names_from = Name, values_from = TempCor_F, values_fn = length)
 
 #SUBAIR (every MS sensor - sensor in the air)
 #function that subtracts the sensor you want from whatever is passed to it
@@ -46,7 +45,7 @@ subair <- function(x, na.rm = FALSE) (x - wide$MS8_Air)
 subMS8_Air <- wide %>% mutate_at(vars(matches("MS")), subair)
 
 #new tibble in long format, joined with location data
-subMS8_AirL <- subMS8_Air %>% pivot_longer(!DateTime, names_to = "Name", values_to = "TempFsub")  %>%
+subMS8_AirL <- subMS8_Air %>% pivot_longer(!DateTime, names_to = "Name", values_to = "TempFsub")%>%
   left_join(locations, by = c("Name" = "Name"))
 
 
@@ -76,7 +75,7 @@ ggplot(aes(DateTime, TempFsub, color = Name))+
 ```{r}
 #SUB WATER
 sites <- c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12")
-subMS8L %>% filter(Name %in% sites, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
+subMS8L %>% filter(Name %in% sites)%>%
 ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
