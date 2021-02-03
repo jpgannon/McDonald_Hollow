@@ -12,8 +12,8 @@ library(dplyr)
 ```{r}
 
 locations <- read_csv("Sensor Locations.csv")
-setwd("~/Google Drive File Stream/My Drive/Brush Mtn Station/Temp sensors/CurrentTempData_15Jan2021")
-#setwd("/Volumes/GoogleDrive/My Drive/Brush Mtn Station/Temp sensors/Oct2_2020_download/Corrected Temperature Files")
+#setwd("~/Google Drive File Stream/My Drive/Brush Mtn Station/Temp sensors/CurrentTempData_15Jan2021")
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/CurrentTempData_15Jan2021")
 tempdata <-
     list.files(pattern = "*.csv") %>% 
     map_dfr(~read_csv(.) %>% 
@@ -66,7 +66,7 @@ subMS8L <- subMS8 %>% pivot_longer(!DateTime, names_to = "Name", values_to = "Te
 ```{r}
 #SUB AIR
 #plot a bunch of sensors and color by location
-subMS8_AirL %>% filter(Type == "Stream", Stream == "MS", between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
+subMS8_AirL %>% filter(Type == "Stream", Stream == "MS")%>%
 ggplot(aes(DateTime, TempFsub, color = Name))+
   geom_line()+
   labs(title = "Mainstem in-stream sensors", x = "Time", y = "Temperature")
