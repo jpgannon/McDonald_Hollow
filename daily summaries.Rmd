@@ -12,7 +12,7 @@ dailysummaries <- subMS8L %>%
            year = year(DateTime), 
            month = month(DateTime), 
            day =  day(DateTime)) %>%
-  summarise(meandt = mean(TempFsub), sddt = sd(TempFsub),
+  summarise(meandt = mean(TempFsub), sddt = sd(TempFsub, na.rm = TRUE),
             maxdt = max(TempFsub), mindt = min(TempFsub)) %>%
   mutate(date = mdy(paste(month, day, year))) %>%
   ungroup() %>%
