@@ -13,7 +13,7 @@ dailysummaries <- subMS8L %>%
            month = month(DateTime), 
            day =  day(DateTime)) %>%
   summarise(meandt = mean(TempFsub), sddt = sd(TempFsub, na.rm = TRUE),
-            maxdt = max(TempFsub), mindt = min(TempFsub)) %>%
+            maxdt = max(TempFsub), mindt = min(TempFsub), lengthData = length(TempFsub)) %>%
   mutate(date = mdy(paste(month, day, year))) %>%
   ungroup() %>%
   select(!c(month, year, day)) 
@@ -77,3 +77,28 @@ submerged1 %>%
 #1 (blue) = water & 0 (red) = air
   
 ```
+
+
+```{r}
+dailysummaries%>%
+  ggplot(aes(x = date, y = Name, fill = as.factor(lengthData)))+
+  geom_tile(color = "black")+
+  theme_linedraw()
+```
+
+```{r}
+#pivot data to make it easy to switch dates in arcgispro
+wetdrywide <- submerged1%>%
+  pivot_wider(names_from = Name, values_from = inWater, date)
+
+wetdrylong <- wetdrywide%>%
+  pivot_longer(!date, names_to = "Name", values_to = "inWater")
+wetdry <- left_join(wetdrylong, locations, by = c("Name" = "Name"))
+
+
+write.csv(wetdry,"G:/My Drive/Independent Study Fall 2020/McDonald_Hollow//wetdry.csv")
+
+```
+
+
+
