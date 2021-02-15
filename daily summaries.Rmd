@@ -58,7 +58,8 @@ submerged1 <- dailysummaries %>%
   mutate(inWater = case_when(
                     sddt < (0.25 * sddt_AIR) ~ 1,
                     sddt >= (0.25 * sddt_AIR) ~ 0
-                   ))
+                   ))%>%
+  mutate(outdate=paste0("D", month(date), day(date), year(date)))
 
 
 ```
@@ -89,14 +90,15 @@ dailysummaries%>%
 ```{r}
 #pivot data to make it easy to switch dates in arcgispro
 wetdrywide <- submerged1%>%
-  pivot_wider(names_from = Name, values_from = inWater, date)
+  pivot_wider(id_cols = Name, outdate, values_from = inWater)
 
-wetdrylong <- wetdrywide%>%
-  pivot_longer(!date, names_to = "Name", values_to = "inWater")
-wetdry <- left_join(wetdrylong, locations, by = c("Name" = "Name"))
+#wetdrylong <- wetdrywide%>%
+  #pivot_longer(!date, names_to = "Name", values_to = "inWater")
+wetdry <- right_join(wetdrywide, locations, by = c("Name" = "Name"))
 
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow")
+write.csv(wetdry,"wetdry.csv")
 
-write.csv(wetdry,"G:/My Drive/Independent Study Fall 2020/McDonald_Hollow//wetdry.csv")
 
 ```
 
