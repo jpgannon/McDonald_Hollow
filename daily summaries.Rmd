@@ -12,8 +12,8 @@ dailysummaries <- subMS8L %>%
            year = year(DateTime), 
            month = month(DateTime), 
            day =  day(DateTime)) %>%
-  summarise(meandt = mean(TempFsub), sddt = sd(TempFsub, na.rm = TRUE),
-            maxdt = max(TempFsub), mindt = min(TempFsub), lengthData = length(TempFsub)) %>%
+  summarise(meandt = mean(TempFsub, na.rm = TRUE), sddt = sd(TempFsub, na.rm = TRUE),
+            maxdt = max(TempFsub, na.rm = TRUE), mindt = min(TempFsub, na.rm = TRUE), lengthData = length(TempFsub)) %>%
   mutate(date = mdy(paste(month, day, year))) %>%
   ungroup() %>%
   select(!c(month, year, day)) 
@@ -67,13 +67,16 @@ submerged1 <- dailysummaries %>%
 ## Test plots
 
 ```{r}
+airsensors <- c("MS8_Air","MS13_Air","TRIB2_1_Air","MS19_Air","MS2_Air")
+nonairsensors <- c("MS3", "MS4", "MS5", "MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12", "MS13", "MS14", "MS15", "MS16", "MS17", "MS18", "MS19", "MS20", "MS21", "TRIB1", "TRIB2_1", "TRIB2_2", "TRIB2_3", "TRIB3")
 
-submerged1 %>%
+submerged1 %>% filter(Name %in% nonairsensors)%>%
   ggplot(aes(x = date, y = Name, fill = as.factor(inWater)))+
   geom_tile(color = "black")+
   theme_linedraw()
  
-
+#setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/McDonald_Hollow_Wet_Dry_Maps/wet and dry days")
+#ggsave("heatmap.pdf", device="pdf")
 
 #1 (blue) = water & 0 (red) = air
   
@@ -96,11 +99,27 @@ wetdrywide <- submerged1%>%
   #pivot_longer(!date, names_to = "Name", values_to = "inWater")
 wetdry <- right_join(wetdrywide, locations, by = c("Name" = "Name"))
 
+wetdrysep <- select(wetdry, Name, matches("D882020"))
 setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow")
-write.csv(wetdry,"wetdry.csv")
+#write.csv(wetdry,"wetdry.csv")
 
 
 ```
 
 
+```{r}
+library(patchwork)
+
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow")
+stage <- read_csv("Copy of McDonald_Hollow_MonStat_Data_Jan21.csv", col_types = "Tddddddddddd")
+stageplot <-
+  stage %>% filter(datetime > mdy("12-01-2020") & datetime < mdy("01-01-2021")) %>%
+  ggplot(aes(datetime, Stage_m_pt))+
+  geom_line()+
+  ylab("Stream stage (m)")+
+  xlab(element_blank())
+
+
+
+```
 
