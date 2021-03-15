@@ -95,11 +95,16 @@ ggplot(aes(DateTime, TempCor_F, color = Name))+
 
 ```{r}
 #plot smaller groups
-tempdata%>% filter(Name == c("MS4", "MS5"))%>%
+tempdata%>% filter(Name == c("MS4", "MS5"), between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
   labs(title = "MS 4 and 5 Sensors", x = "Time", y = "Temperature")+
-  theme_bw()
+  theme_bw()+
+  xlab(element_blank())
+
+#setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/McDonald_Hollow_Wet_Dry_Maps/wet and dry days")
+#ggsave("exampleplot4.jpg", device = "jpg", width = 5.28, height = 3.26, units = c("in"))
+
 
 #, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00"))
 ```
@@ -108,12 +113,15 @@ ggplot(aes(DateTime, TempCor_F, color = Name))+
 
 ```{r}
 #plot smaller groups
-tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"), between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
+tempdata%>% filter(Name == c("MS6", "MS7", "MS8", "MS9", "MS10", "MS11", "MS12"), between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-11-01 13:30:00")))%>%
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
   labs(title = "MS 6-12 Sensors", x = "Time", y = "Temperature")+
-  theme_bw()
+  theme_bw()+
+  xlab(element_blank())
 
+#setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/McDonald_Hollow_Wet_Dry_Maps/wet and dry days")
+#ggsave("exampleplot1.jpg", device = "jpg", width = 5.28, height = 3.26, units = c("in") )
 
 #, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00"))
 ```
@@ -121,11 +129,15 @@ ggplot(aes(DateTime, TempCor_F, color = Name))+
 
 ```{r}
 #plot smaller groups
-tempdata%>% filter(Name == c("MS13", "MS13_Air", "MS13_2"))%>%
+tempdata%>% filter(Name == c("MS13", "MS13_Air", "MS13_2"), between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00")))%>%
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
   labs(title = "MS13 Sensors", x = "Time", y = "Temperature")+
-  theme_bw()
+  theme_bw()+
+  xlab(element_blank())
+
+#setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/McDonald_Hollow_Wet_Dry_Maps/wet and dry days")
+#ggsave("exampleplot5.jpg", device = "jpg", width = 5.28, height = 3.26, units = c("in"))
 
 #, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00"))
 ```
@@ -136,7 +148,12 @@ tempdata%>% filter(Name == c("MS14", "MS15"), between(DateTime, as_datetime("202
 ggplot(aes(DateTime, TempCor_F, color = Name))+
   geom_line()+
   labs(title = "MS 14 and 15 Sensors", x = "Time", y = "Temperature")+
-  theme_bw()
+  theme_bw()+
+  xlab(element_blank())
+
+
+setwd("G:/My Drive/Independent Study Fall 2020/McDonald_Hollow/McDonald_Hollow_Wet_Dry_Maps/wet and dry days")
+ggsave("exampleplot3.jpg", device = "jpg", width = 5.28, height = 3.26, units = c("in"))
 
 #, between(DateTime, as_datetime("2020-08-15 13:30:00"), as_datetime("2020-09-01 13:30:00"))
 ```
